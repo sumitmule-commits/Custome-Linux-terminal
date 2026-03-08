@@ -2,7 +2,7 @@
 
 char** parse_input(char* input)
 {
-    size_t buffer_size = MAX_INPUT;
+    size_t buffer_size = SHELL_MAX_INPUT;
     char** tokens = malloc(buffer_size * sizeof(char*));
     char* token = NULL;
     size_t position = 0;
@@ -11,7 +11,7 @@ char** parse_input(char* input)
     if(!tokens) 
     {
         perror("Malloc");
-        exit(EXIT_FAILURE);
+        exit(1);
     }
 
     // Loop through each character in the input string
@@ -25,7 +25,7 @@ char** parse_input(char* input)
 
         if(input[i] == '\0') break;
 
-        token = &input[i]; //where word starts
+        token = &input[i];
 
         while (input[i] != '\0' && input[i] != ' ' && input[i] != '\n' && input[i] != '\t' && input[i] != '\r' && input[i] != '\a')
         {
@@ -38,7 +38,7 @@ char** parse_input(char* input)
         if(!tokens[position]) 
         {
             perror("Malloc");
-            exit(EXIT_FAILURE);
+            exit(1);
         }
 
         for (size_t j = 0; j < token_length; j++)
@@ -52,7 +52,6 @@ char** parse_input(char* input)
     
     tokens[position] = NULL; // Terminate the array with NULL
     return tokens;
-
 }
 
 // Free allocated tokens
@@ -61,11 +60,9 @@ void free_tokens(char** tokens)
     if (!tokens)
         return;
 
-    for (size_t i = 0; tokens[i]; i++)
-    {
+    for (size_t i = 0; tokens[i]; i++) {
         free(tokens[i]); // Free each token
     }
 
     free(tokens); // Free the tokens array
-    
 }
